@@ -1,72 +1,37 @@
 package dns
 
-import (
-	"encoding/json"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"strconv"
-)
-
-type DnsRequest struct {
-	Xcord string `json:"x"`
-	Ycord string `json:"y"`
-	Zcord string `json:"z"`
-	Vel   string `json:"vel"`
+type DnsInfo struct {
+	SectorId int
+	Info     DnsOper
 }
 
-type DnsLocResp struct {
-	Location float32 `json:"loc"`
+type DnsOper interface {
+	GetSectorId() int
+	SetSectorId(int) error
+	CalcLocation(DnsReq) (float64, error)
 }
 
-const (
-	SectorId              = 1
-	MarshalingFailedErr   = "Marshaling failed"
-	UnMarshalingFailedErr = "UnMarshaling failed"
-)
+type DnsReq struct {
+	X   float64
+	Y   float64
+	Z   float64
+	Vel float64
+}
 
-func DnsRequestHandler(w http.ResponseWriter, r *http.Request) {
-	dnsReq := DnsRequest{}
+func New() *DnsInfo {
+	return new(DnsInfo)
+}
 
-	jsn, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		log.Fatal("Error in reading the request body", err)
-	}
+func (dInfo *DnsInfo) GetSectorId() int {
+	return dInfo.SectorId
+}
 
-	err = json.Unmarshal(jsn, &dnsReq)
-	if err != nil {
-		log.Fatal("Unmarshal failed", err)
-	}
+func (dInfo *DnsInfo) SetSectorId(id int) error {
+	dInfo.SectorId = id
+	return nil
+}
 
-	log.Printf("Body received %s\n", jsn)
-	log.Printf("dnsReq %+v\n", dnsReq)
-
-	xCordFloat, err := strconv.ParseFloat(dnsReq.Xcord, 32)
-	if err != nil {
-		log.Fatal("ParseFloat failed", err)
-	}
-	yCordFloat, err := strconv.ParseFloat(dnsReq.Ycord, 32)
-	if err != nil {
-		log.Fatal("ParseFloat failed", err)
-	}
-	zCordFloat, err := strconv.ParseFloat(dnsReq.Zcord, 32)
-	if err != nil {
-		log.Fatal("ParseFloat failed", err)
-	}
-	velFloat, err := strconv.ParseFloat(dnsReq.Vel, 32)
-	if err != nil {
-		log.Fatal("ParseFloat failed", err)
-	}
-
-	sectorId := float64(SectorId)
-	location := sectorId*xCordFloat + sectorId*yCordFloat + sectorId*zCordFloat + velFloat
-
-	loc := DnsLocResp{Location: float32(location)}
-	locJsn, er := json.Marshal(loc)
-	if er != nil {
-		log.Fatal(MarshalingFailedErr, err)
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(locJsn)
+func (dInfo *DnsInfo) CalcLocation(req *DnsReq) (float64, error) {
+	sectorId := float64(dInfo.SectorId)
+	return sectorId*req.X + sectorId*req.Y + sectorId*req.Z + req.Vel, nil
 }

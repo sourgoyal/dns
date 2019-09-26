@@ -6,7 +6,7 @@ WORKDIR /opt/workspace
 
 RUN mkdir -p dns-ep/bin && mkdir -p dns-ep/pkg && mkdir -p dns-ep/src
 
-COPY . dns-ep/src
+COPY . dns-ep/
 
 ENV GOPATH /opt/workspace/dns-ep
 ENV GOBIN /opt/workspace/dns-ep/bin

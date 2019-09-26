@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"dns-ep/types"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -10,8 +11,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-
-	dns "github.com/sourgoyal/dns/dnsSrv"
 )
 
 func TestDns(t *testing.T) {
@@ -25,10 +24,10 @@ func TestDns(t *testing.T) {
 		go func() {
 			defer func() { time.Sleep(100 * time.Millisecond); <-RequestBurstChan }()
 			defer wg.Done()
-			url := "http://localhost:8080/getLoc"
+			url := "http://localhost:6080/getLoc"
 			fmt.Println("URL:>", url)
 
-			jsonStr, err := json.Marshal(dns.DnsRequest{Xcord: "123.12", Ycord: "456.56", Zcord: "789.89", Vel: "20.0"})
+			jsonStr, err := json.Marshal(types.DnsRequest{Xcord: "123.12", Ycord: "456.56", Zcord: "789.89", Vel: "20"})
 			if err != nil {
 				t.Error("Marshing failed", err)
 			}
