@@ -19,6 +19,12 @@ type DnsLocResp struct {
 	Location float32 `json:"loc"`
 }
 
+const (
+	SectorId              = 1
+	MarshalingFailedErr   = "Marshaling failed"
+	UnMarshalingFailedErr = "UnMarshaling failed"
+)
+
 func DnsRequestHandler(w http.ResponseWriter, r *http.Request) {
 	dnsReq := DnsRequest{}
 
