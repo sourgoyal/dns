@@ -1,5 +1,5 @@
 package constants
 
 const (
-	SectorId                   = 1
+	SectorId = 1
 )

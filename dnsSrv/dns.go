@@ -1,12 +1,13 @@
 package dns
 
 import (
-	"dns-ep/dns/constants"
 	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
+
+	"../dnsSrv/constants"
 )
 
 type DnsRequest struct {
