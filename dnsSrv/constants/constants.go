@@ -1,4 +1,4 @@
-package constants
+package dns
 
 const (
 	SectorId = 1

@@ -1,4 +1,4 @@
-package dnsSrv
+package dns
 
 import (
 	"encoding/json"
@@ -6,8 +6,6 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-
-	"../dnsSrv/constants"
 )
 
 type DnsRequest struct {
@@ -54,13 +52,13 @@ func DnsRequestHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal("ParseFloat failed", err)
 	}
 
-	sectorId := float64(constants.SectorId)
+	sectorId := float64(SectorId)
 	location := sectorId*xCordFloat + sectorId*yCordFloat + sectorId*zCordFloat + velFloat
 
 	loc := DnsLocResp{Location: float32(location)}
 	locJsn, er := json.Marshal(loc)
 	if er != nil {
-		log.Fatal(constants.MarshalingFailedErr, err)
+		log.Fatal(MarshalingFailedErr, err)
 	}
 
 	w.Header().Set("Content-Type", "application/json")

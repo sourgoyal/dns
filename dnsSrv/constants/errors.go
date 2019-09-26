@@ -1,4 +1,4 @@
-package constants
+package dns
 
 const (
 	MarshalingFailedErr   = "Marshaling failed"
