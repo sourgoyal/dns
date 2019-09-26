@@ -1,4 +1,4 @@
-package dns
+package dnsSrv
 
 import (
 	"encoding/json"
