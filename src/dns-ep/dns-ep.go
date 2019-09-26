@@ -1,12 +1,12 @@
 package main
 
 import (
-	"dns-ep/dns"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/gorilla/mux"
+	dns "github.com/sourgoyal/dns/dnsSrv"
 	throttling "github.com/sourgoyal/golang/http-throttling"
 )
 

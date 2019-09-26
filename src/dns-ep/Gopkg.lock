@@ -30,6 +30,7 @@
   analyzer-version = 1
   input-imports = [
     "github.com/gorilla/mux",
+    "github.com/sourgoyal/dns/dns",
     "github.com/sourgoyal/golang/http-throttling",
   ]
   solver-name = "gps-cdcl"
