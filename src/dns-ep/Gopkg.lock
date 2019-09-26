@@ -11,11 +11,10 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:baf23a56874d55f15533e74a10479827e79ad1d5540a29ea04d38c40e5c0d878"
   name = "github.com/sourgoyal/dns"
   packages = ["dnsSrv"]
   pruneopts = "UT"
-  revision = "9f989964a5a7161122d69ca1d9117f9d275d6b7b"
+  revision = "74dda3ecb91e1930c869b804f48f947acd3cf07c"
 
 [[projects]]
   branch = "master"

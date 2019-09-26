@@ -24,7 +24,7 @@ func TestDns(t *testing.T) {
 		go func() {
 			defer func() { time.Sleep(100 * time.Millisecond); <-RequestBurstChan }()
 			defer wg.Done()
-			url := "http://localhost:6080/getLoc"
+			url := "http://localhost:8080/getLoc"
 			fmt.Println("URL:>", url)
 
 			jsonStr, err := json.Marshal(types.DnsRequest{Xcord: "123.12", Ycord: "456.56", Zcord: "789.89", Vel: "20"})
