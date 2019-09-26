@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"dns-ep/dns"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -11,6 +10,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+
+	dns "github.com/sourgoyal/dns/dnsSrv"
 )
 
 func TestDns(t *testing.T) {

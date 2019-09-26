@@ -11,11 +11,19 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:a6a5792b3dbcbb8dda81900d864cdc236d917aaf82daab0511a1835e5e2d2abd"
+  digest = "1:baf23a56874d55f15533e74a10479827e79ad1d5540a29ea04d38c40e5c0d878"
+  name = "github.com/sourgoyal/dns"
+  packages = ["dnsSrv"]
+  pruneopts = "UT"
+  revision = "9f989964a5a7161122d69ca1d9117f9d275d6b7b"
+
+[[projects]]
+  branch = "master"
+  digest = "1:cac8f54d6202cad1ec91af7d58bf706fefa49e527b662142f3a80be86501e428"
   name = "github.com/sourgoyal/golang"
   packages = ["http-throttling"]
   pruneopts = "UT"
-  revision = "030b7a7500ed88237197a7dc39b2cf40909e4079"
+  revision = "b3d8ab0ebbade9e63ea84ffc71e5f66ff2bbf55d"
 
 [[projects]]
   branch = "master"
@@ -30,7 +38,7 @@
   analyzer-version = 1
   input-imports = [
     "github.com/gorilla/mux",
-    "github.com/sourgoyal/dns/dns",
+    "github.com/sourgoyal/dns/dnsSrv",
     "github.com/sourgoyal/golang/http-throttling",
   ]
   solver-name = "gps-cdcl"

@@ -26,7 +26,7 @@ func main() {
 	// Configure rate limiter to throttle incoming http requests.
 	throttling.ConfigureLimiter(ThrottlingHttpRequestRate, ThrottlingHttpRequestBurst)
 	log.Printf("Starting DNS Endpoint...\n")
-	log.Printf("Throttling HTTP request at rate: %d, BurstSize: %d\n", constants.ThrottlingHttpRequestRate, constants.ThrottlingHttpRequestBurst)
+	log.Printf("Throttling HTTP request at rate: %d, BurstSize: %d\n", ThrottlingHttpRequestRate, ThrottlingHttpRequestBurst)
 
 	// Use exported DNSPORT
 	port := os.Getenv("DNSPORT")
