@@ -11,6 +11,7 @@ docker run -it --publish 6080:8080 --name dnsApp --rm dns-ep
 ```
 ### Run in local
 ```bash 
+. dep-ensure.sh
 . install.sh
 ```
 

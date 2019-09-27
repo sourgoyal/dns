@@ -16,16 +16,19 @@ import (
 )
 
 const (
-	SectorId                   = 1
-	ThrottlingHttpRequestRate  = 5
-	ThrottlingHttpRequestBurst = 5
+	SectorId                   = 1   // SectorId is taken constant as requirement
+	ThrottlingHttpRequestRate  = 100 // Rate limit HTTP requests per second. Client shall retry if failed to get location
+	ThrottlingHttpRequestBurst = 50  // Burst size allowed
 	DnsEPDefaultPort           = "8080"
 )
 
+// DNS holds bussiness logic for this app.
+// It can be used with any REST, gRPC, etc
+// It can be modified into map[sectorID] with RW Lock in case, this DNS has to serve multiple sectors
 var Dns *dns.DnsInfo
 
 func main() {
-	// Configure DNS
+	// Configure DNS and assign sectorID to it.
 	Dns = dns.New()
 	if err := Dns.SetSectorId(SectorId); err != nil {
 		log.Fatal("Failed to initialize...")
@@ -54,30 +57,33 @@ func main() {
 	}
 }
 
+// Handler for "/getLoc"
 func dnsRequestHandler(w http.ResponseWriter, r *http.Request) {
 	dnsReq := types.DnsRequest{}
 
+	// Read JSON from the HTTP request body
 	jsn, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		sendErr(w, "HttpRequestReadFailed "+err.Error())
 		return
 	}
 
+	// Unmarshal JSON into DnsRequest{} structure
 	err = json.Unmarshal(jsn, &dnsReq)
 	if err != nil {
 		sendErr(w, "UnmarshallingFailed "+err.Error())
 		return
 	}
+	log.Printf("JSON received %s\n", jsn)
 
-	log.Printf("Body received %s\n", jsn)
-	log.Printf("dnsReq %+v\n", dnsReq)
-
+	// Convert string into floats
 	xCordFloat, yCordFloat, zCordFloat, velFloat, err := utils.StrConvFloat(dnsReq.Xcord, dnsReq.Ycord, dnsReq.Zcord, dnsReq.Vel)
 	if err != nil {
 		sendErr(w, "ParseStringToFloatFailed "+err.Error())
 		return
 	}
 
+	// Call DNS to get the locations for the HTTP request
 	dnsR := &dns.DnsReq{X: xCordFloat, Y: yCordFloat, Z: zCordFloat, Vel: velFloat}
 	location, err := Dns.CalcLocation(dnsR)
 	if err != nil {
@@ -85,21 +91,17 @@ func dnsRequestHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	loc := types.DnsLocResp{Location: float32(location)}
+	// Prepare JSON response to be sent to HTTP client as response
+	loc := types.DnsLocResp{Location: location}
 	locJsn, er := json.Marshal(loc)
 	if err != nil {
 		sendErr(w, "MarshallingRespFailed "+er.Error())
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	if _, err = w.Write(locJsn); err != nil {
-		log.Printf("Error Occured while sending error to client err: %+v", err)
-	}
+	utils.SendJsonToClient(w, locJsn)
 }
 
 func sendErr(w http.ResponseWriter, err string) {
-	if _, e := w.Write([]byte(err)); e != nil {
-		log.Print("Error Occured while sending error to client")
-	}
+	utils.SendJsonToClient(w, []byte(err))
 }

@@ -1,5 +1,6 @@
 package types
 
+// JSON structure mapping to be received from Drones (HTTP Client)
 type DnsRequest struct {
 	Xcord string `json:"x"`
 	Ycord string `json:"y"`
@@ -7,6 +8,7 @@ type DnsRequest struct {
 	Vel   string `json:"vel"`
 }
 
+// JSON structure mapping to be sent to Drones (HTTP client)
 type DnsLocResp struct {
-	Location float32 `json:"loc"`
+	Location float64 `json:"loc"`
 }
