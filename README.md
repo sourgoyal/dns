@@ -24,12 +24,13 @@ Input JSON
 Example: {"x":"123.12","y":"456.56","z":"789.89","vel":"20.0"}
 ```
 
-# North Star 
+# Enhancements 
 - Add monitoring using Prometheus and Grafana
 - DNS serving multiple sectors at once
 - Identification of HTTP client and serve as per their requirements
 - Provide backword compatibility when upgrading logic
 - Deploy using k8s and Helm
+- Generate documentation using Swagger
 
 # License
 MIT License
