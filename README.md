@@ -7,7 +7,7 @@ DNS helps drones to locate databank to upload data gathered from a sector of a g
 ### Run in a docker container 
 ```bash
 docker build -t dns-ep .
-docker run -it --publish 6080:8080 --name dnsApp --rm dns-ep
+docker run -it --publish 8080:8080 --name dnsApp --rm dns-ep
 ```
 ### Run in local
 ```bash 

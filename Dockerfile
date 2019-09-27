@@ -2,6 +2,9 @@
 # Prepare binary
 FROM golang:latest AS builder
 
+# Install dep
+RUN go get -u github.com/golang/dep/...
+
 WORKDIR /opt/workspace
 
 RUN mkdir -p dns-ep/bin && mkdir -p dns-ep/pkg && mkdir -p dns-ep/src
@@ -12,6 +15,8 @@ ENV GOPATH /opt/workspace/dns-ep
 ENV GOBIN /opt/workspace/dns-ep/bin
 
 WORKDIR /opt/workspace/dns-ep/src/dns-ep
+
+RUN dep ensure -v
 
 RUN CGO_ENABLED=0 go install dns-ep.go
 
