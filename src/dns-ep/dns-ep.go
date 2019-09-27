@@ -64,14 +64,16 @@ func dnsRequestHandler(w http.ResponseWriter, r *http.Request) {
 	// Read JSON from the HTTP request body
 	jsn, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		sendErr(w, "HttpRequestReadFailed "+err.Error())
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		log.Println("HttpRequestReadFailed " + err.Error())
 		return
 	}
 
 	// Unmarshal JSON into DnsRequest{} structure
 	err = json.Unmarshal(jsn, &dnsReq)
 	if err != nil {
-		sendErr(w, "UnmarshallingFailed "+err.Error())
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		log.Println("UnmarshallingFailed " + err.Error())
 		return
 	}
 	log.Printf("JSON received %s\n", jsn)
@@ -79,7 +81,8 @@ func dnsRequestHandler(w http.ResponseWriter, r *http.Request) {
 	// Convert string into floats
 	xCordFloat, yCordFloat, zCordFloat, velFloat, err := utils.StrConvFloat(dnsReq.Xcord, dnsReq.Ycord, dnsReq.Zcord, dnsReq.Vel)
 	if err != nil {
-		sendErr(w, "ParseStringToFloatFailed "+err.Error())
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		log.Println("ParseStringToFloatFailed " + err.Error())
 		return
 	}
 
@@ -87,21 +90,19 @@ func dnsRequestHandler(w http.ResponseWriter, r *http.Request) {
 	dnsR := &dns.DnsReq{X: xCordFloat, Y: yCordFloat, Z: zCordFloat, Vel: velFloat}
 	location, err := Dns.CalcLocation(dnsR)
 	if err != nil {
-		sendErr(w, "LocationFailed "+err.Error())
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		log.Println("Location Calculation Failed " + err.Error())
 		return
 	}
 
 	// Prepare JSON response to be sent to HTTP client as response
 	loc := types.DnsLocResp{Location: location}
 	locJsn, er := json.Marshal(loc)
-	if err != nil {
-		sendErr(w, "MarshallingRespFailed "+er.Error())
+	if er != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		log.Println("MarshallingRespFailed " + er.Error())
 		return
 	}
 
 	utils.SendJsonToClient(w, locJsn)
-}
-
-func sendErr(w http.ResponseWriter, err string) {
-	utils.SendJsonToClient(w, []byte(err))
 }
