@@ -81,7 +81,7 @@ func dnsRequestHandler(w http.ResponseWriter, r *http.Request) {
 	// Convert string into floats
 	xCordFloat, yCordFloat, zCordFloat, velFloat, err := utils.StrConvFloat(dnsReq.Xcord, dnsReq.Ycord, dnsReq.Zcord, dnsReq.Vel)
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		log.Println("ParseStringToFloatFailed " + err.Error())
 		return
 	}
