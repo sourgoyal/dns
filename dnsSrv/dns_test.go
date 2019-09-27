@@ -6,6 +6,7 @@ func TestSetGetSectorId(t *testing.T) {
 	var dns *DnsInfo
 	if dns = New(); dns == nil {
 		t.Error("DNS init failed")
+		return
 	}
 
 	if err := dns.SetSectorId(10); err != nil {
