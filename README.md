@@ -1,8 +1,6 @@
 # DNS (Drone Navigation Service)
 DNS helps drones to locate databank to upload data gathered from a sector of a galaxy.
 
-## Note: More details about DNS and requirements are available in wiki
-
 # Install
 ### Run in a docker container 
 ```bash
